@@ -2,6 +2,10 @@ const { Router } = require('express');
 const router = Router();
 var crypto = require('crypto');
 const User = require('../models/user')
+const { appendFile } = require('fs');
+var session = require('express-session');
+
+router.use(session({secret:"minu238g02839ji4jijn3928", resave:false,saveUninitialized:true}));
 
 router.get('/api/profiles', async (req,res) => {
     try {
@@ -47,7 +51,7 @@ router.post('/api/profiles/login', async (req,res) => {
         } if(!user) {
             return res.status(404).send();
         } 
-
+        req.session.user = user;
         return res.status(200).send();
     });
 });
@@ -82,6 +86,16 @@ router.put('/api/profiles/update/:_id', getUser, async (req, res) => {
         res.status(400).json({ message: err.message })
     }
 })
+
+router.get('/auth', async function(req,res) {
+    if(!req.session.user) {
+        console.log("Incorrect");
+        return res.status(401).send();
+    }
+    const user = await User.findById(req.session.user)
+    return res.status(200).json(user);
+});
+
 
 async function getUser(req, res, next) {
     let user
