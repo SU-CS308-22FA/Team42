@@ -52,7 +52,7 @@ router.post('/api/profiles/login', async (req,res) => {
             return res.status(404).send();
         } 
         req.session.user = user;
-        return res.status(200).send();
+        return res.status(200).json(req.sessionID);
     });
 });
 
@@ -92,8 +92,10 @@ router.get('/auth', async function(req,res) {
         console.log("Incorrect");
         return res.status(401).send();
     }
-    const user = await User.findById(req.session.user)
-    return res.status(200).json(user);
+    var user = await User.find(req.session.user)
+    var session_id = req.sessionID
+    var object = { user, session_id }
+    return res.status(200).json(object);
 });
 
 
