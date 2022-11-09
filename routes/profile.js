@@ -52,7 +52,11 @@ router.post('/api/profiles/login', async (req,res) => {
             return res.status(404).send();
         } 
         req.session.user = user;
-        return res.status(200).json(req.sessionID);
+        user_id = user._id
+        session_id = req.sessionID
+        var loginObject = { user_id, session_id}
+        //return res.status(200).json(req.sessionID);
+        return res.status(200).json(loginObject);
     });
 });
 
