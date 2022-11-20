@@ -8,8 +8,8 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo');
 
 app.use(session({
-    secret: 'foo',
-    store: MongoStore.create({ mongoUrl: process.env.DATABASE })
+    store: MongoStore.create({ mongoUrl: process.env.DATABASE }),
+    secret: 'foo'
 }));
 
 app.use(cors({
