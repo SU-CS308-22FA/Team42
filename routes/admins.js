@@ -1,13 +1,13 @@
 const { Router } = require('express');
 const router = Router();
 var crypto = require('crypto');
-const User = require('../models/user')
+const User = require('../models/admin')
 const { appendFile } = require('fs');
 var session = require('express-session');
 
 router.use(session({secret:"minu238g02839ji4jijn3928", resave:false,saveUninitialized:true}));
 
-router.get('/api/profiles', async (req,res) => {
+router.get('/api/admins', async (req,res) => {
     try {
         const users = await User.find()
         res.json(users)
@@ -16,18 +16,17 @@ router.get('/api/profiles', async (req,res) => {
     }
 });
 
-router.get('/api/profiles/:_id', getUser, (req,res) => {
+router.get('/api/admins/:_id', getUser, (req,res) => {
     res.json(res.user);
 })
 
-router.post('/api/profiles/register', async (req,res) => {
-    const {email, fullname, phone, password} = req.body;
+router.post('/api/admins/register', async (req,res) => {
+    const {admin_login, fullname, password} = req.body;
     var hash = crypto.createHash('sha256').update(password).digest('hex');
     console.log(req.body);
     const user = new User({
-        email: email,
+        admin_login: admin_login,
         fullname: fullname,
-        phone: phone,
         password: hash,
         created_at: new Date,
         modified_at: new Date,
@@ -40,11 +39,11 @@ router.post('/api/profiles/register', async (req,res) => {
     }
 });
 
-router.post('/api/profiles/login', async (req,res) => {
-    const {email, password} = req.body;
+router.post('/api/admins/login', async (req,res) => {
+    const {admin_login, password} = req.body;
     var hash = crypto.createHash('sha256').update(password).digest('hex');
     console.log(req.body);
-    User.findOne({email: email, password: hash}, function(err, user) {
+    User.findOne({admin_login: admin_login, password: hash}, function(err, user) {
         if(err) {
             console.log(err);
             return res.status(500).send();
@@ -62,7 +61,7 @@ router.post('/api/profiles/login', async (req,res) => {
 
 
 
-router.delete('/api/profiles/delete/:_id', getUser, async (req, res) => {
+router.delete('/api/admins/delete/:_id', getUser, async (req, res) => {
     try {
         await res.user.remove()
         res.json({ message: "Deleted Subscriber"})
@@ -71,13 +70,11 @@ router.delete('/api/profiles/delete/:_id', getUser, async (req, res) => {
     }
 })
 
-router.put('/api/profiles/update/:_id', getUser, async (req, res) => {
-    if(req.body.email != null) {
-        res.user.email = req.body.email
+router.put('/api/admins/update/:_id', getUser, async (req, res) => {
+    if(req.body.admin_login != null) {
+        res.user.admin_login = req.body.admin_login
     } if(req.body.fullname != null) {
         res.user.fullname = req.body.fullname
-    } if(req.body.phone != null) {
-        res.user.phone = req.body.phone
     } if(req.body.password != null) {
         var hash = crypto.createHash('sha256').update(req.body.password).digest('hex');
         res.user.password = hash
@@ -91,7 +88,7 @@ router.put('/api/profiles/update/:_id', getUser, async (req, res) => {
     }
 })
 
-router.get('/auth', async function(req,res) {
+router.get('admin/auth', async function(req,res) {
     if(!req.session.user) {
         console.log("Incorrect");
         return res.status(401).send();

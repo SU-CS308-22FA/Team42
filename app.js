@@ -27,6 +27,8 @@ mongoose
 //Routes
 //app.use(errors.errorHandler);
 app.use(require('./routes/profile'));
+app.use(require('./routes/admins'));
+app.use(require('./routes/competition'));
 
 
 //Starting the server
