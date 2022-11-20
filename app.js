@@ -5,11 +5,11 @@ const app = express();
 const cors = require('cors');
 const session = require('express-session');
 
-const MongoStore = require('connect-mongo')(session);
+const MongoStore = require('connect-mongo');
 
 app.use(session({
     secret: 'foo',
-    store: new MongoStore(options)
+    store: MongoStore.create({ mongoUrl: process.env.DATABASE })
 }));
 
 app.use(cors({
