@@ -3,6 +3,14 @@ const mongoose = require('mongoose');
 const express = require('express');
 const app = express();
 const cors = require('cors');
+const session = require('express-session');
+
+const MongoStore = require('connect-mongo')(session);
+
+app.use(session({
+    secret: 'foo',
+    store: new MongoStore(options)
+}));
 
 app.use(cors({
     origin: "*",
