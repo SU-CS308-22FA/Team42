@@ -3,17 +3,6 @@ const mongoose = require('mongoose');
 const express = require('express');
 const app = express();
 const cors = require('cors');
-const session = require('express-session');
-const MongoStore = require('connect-mongo');
-
-app.use(session({
-    secret: 'thisismysecret',
-    resave: false,
-    saveUninitialized: false,
-    store: MongoStore.create( {
-        mongoUrl: process.env.DATABASE,
-        touchAfter: 24 * 3600 
-     }) }));
 
 app.use(cors({
     origin: "*",
@@ -35,12 +24,12 @@ mongoose
         console.log("DB CONNECTED");
     });
 
-
 //Routes
 //app.use(errors.errorHandler);
 app.use(require('./routes/profile'));
 app.use(require('./routes/admins'));
-app.use(require('./routes/competition'));
+app.use(require('./routes/competitions'));
+app.use(require('./routes/teams'));
 
 
 //Starting the server
