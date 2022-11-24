@@ -3,12 +3,12 @@ const mongoose = require('mongoose')
 const competitionSchema = new mongoose.Schema({
     competition_id: {
         type: Number,
-        required: true,
-        unique: true
+        required: false,
+        default: 0
     },
     season_id: {
         type: Number,
-        required: true,
+        required: false,
         default: 0
     },
     competition_name: {
@@ -29,11 +29,11 @@ const competitionSchema = new mongoose.Schema({
         required: true
     },
     competition_start: {
-        type: Date,
+        type: String,
         required: true
     },
     competition_end: {
-        type: Date,
+        type: String,
         required: true
     },
     created_at: {
