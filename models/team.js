@@ -11,7 +11,7 @@ const teamSchema = new mongoose.Schema({
         required: true,
     },
     lineup : [ {
-        player_id : Number,
+        user_id : String,
         player_name : String,
         player_nickname : String,
         jersey_number : Number,
@@ -34,7 +34,12 @@ const teamSchema = new mongoose.Schema({
             to_period : Number,
             start_reason : String,
             end_reason : String
-          }]
+        }],
+        owner: {
+            type: Boolean,
+            default: false,
+            required: true,
+        }
     },],
     created_at: {
         type: Date,
