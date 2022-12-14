@@ -79,7 +79,7 @@ router.put('/api/teams/delete/player/:team_id/:user_id', getTeamUser, getUser, a
         res.team.lineup = res.team.lineup.filter(v => v.user_id !== req.params.user_id)
         const updatedTeam = await res.team.save()
         res.team.modified_at = new Date
-        res.user.in_team = true;
+        res.user.in_team = false;
         const updatedUser = await res.user.save()
         res.json(updatedTeam)
     } else {
