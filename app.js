@@ -4,9 +4,19 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 
-app.use(cors({
-    origin: "*",
-}));
+const corsOpt = {
+    credentials: true,
+    origin: process.env.CORS_ALLOW_ORIGIN || '*', // this work well to configure origin url in the server
+    methods: ['GET','POST','DELETE','UPDATE','PUT','PATCH'], // to works well with web app, OPTIONS is required
+    allowedHeaders: ['Content-Type', 'Authorization'] // allow json and token in the headers
+};
+app.use(cors(corsOpt)); // cors for all the routes of the application
+app.options('*', cors(corsOpt)); 
+
+// app.use(cors({
+//     origin: "*",
+//     methods: ['GET','POST','DELETE','UPDATE','PUT','PATCH']
+// }));
 
 //Settings
 app.set('port', process.env.PORT || 8000);
@@ -30,6 +40,7 @@ app.use(require('./routes/profile'));
 app.use(require('./routes/admins'));
 app.use(require('./routes/competitions'));
 app.use(require('./routes/teams'));
+app.use(require('./routes/search'));
 
 
 //Starting the server
