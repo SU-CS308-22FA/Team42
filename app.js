@@ -41,7 +41,23 @@ app.use(require('./routes/admins'));
 app.use(require('./routes/competitions'));
 app.use(require('./routes/teams'));
 app.use(require('./routes/search'));
+app.use(require('./routes/friend_request'));
 
+exports.findById = function(req, res) {
+    var id = req.params.id;
+    console.log('Retrieving Something with ID: ' + id);
+    var collection = db.collection('playDB');
+    collection.findOne({'_id':new BSON.ObjectID(id)},{}, function(err, item) {
+      res.send(item);
+    });
+};
+
+exports.findAll = function(req, res) {
+    var collection = db.collection('playDB');
+    collection.find().toArray(function(err, items) {
+      res.send(items);
+    });
+};
 
 //Starting the server
 app.listen(app.get('port'), () => {

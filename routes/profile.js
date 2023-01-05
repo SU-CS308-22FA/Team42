@@ -20,6 +20,10 @@ router.get('/api/profiles/:_id', getUser, (req,res) => {
     res.json(res.user);
 })
 
+router.get('/api/profiles/friends/:_id', getUser, (req,res) => {
+    res.json(res.user.friends);
+})
+
 router.post('/api/profiles/register', async (req,res) => {
     const {email, fullname, phone, password} = req.body;
     var hash = crypto.createHash('sha256').update(password).digest('hex');
@@ -88,6 +92,17 @@ router.put('/api/profiles/update/:_id', getUser, async (req, res) => {
         res.json(updatedUser)
     } catch (err) {
         res.status(400).json({ message: err.message })
+    }
+})
+
+router.put('/api/profiles/add/friend/:_id', getUser, async (req, res) => {
+    if(req.body._id != null) {
+        res.user.friends.push(req.body._id)
+        const updatedUser = await res.user.save()
+        res.user.modified_at = new Date
+        return res.json(updatedUser)
+    } else {
+        return res.status(400).json({"Error": "Error"})
     }
 })
 
