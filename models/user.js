@@ -18,6 +18,9 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    friends: [{
+        id: String
+    }],
     in_team: {
         type: Boolean,
         default: false
